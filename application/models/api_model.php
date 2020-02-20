@@ -26,7 +26,7 @@ class Api_model extends CI_Model {
 	public function apiCall($url, $dataArray, $type, $param){
 	    	    
 	    //print_r("inside api call");
-	    //log_message('debug',print_r('inside apicall', TRUE));
+	    log_message('debug',print_r('inside apicall', TRUE));
 	    //log_message('debug',print_r('method is :'.$type, TRUE));
 	    //log_message('debug',print_r('url is :'.$url, TRUE));
 
