@@ -18,6 +18,10 @@ class Api_Model extends CI_Model {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	public function __construct(){
+		parent::__construct();
+	}
   	
 	public function apiCall($url, $dataArray, $type, $param){
 	    	    
