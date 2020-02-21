@@ -464,7 +464,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			success: function(response){
 				try {
 					if (response['code'] == 0){
-						//alert('successfully updated the profile');
+						alert('successfully updated the profile :'+<?=base_url()?>);
 						window.location = '<?=base_url()?>';
 						$("#up_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
 						
