@@ -266,22 +266,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			  <form id="profile_form" enctype="multipart/form-data" class="form-horizontal">
 				<div id="up_success"></div>
 				<div class="form-group">
-				  <label for="exampleInputEmail1">First Name</label>
+				  <label for="up_first_name">First Name</label>
 				  <input type="text" id="up_first_name" class="form-control" name="up_first_name" placeholder="First Name" value="<?php echo $display['display_first_name']; ?>">
 				</div>
 				<div class="form-group">
-				  <label for="exampleInputEmail1">Last Name</label>
+				  <label for="up_last_name">Last Name</label>
 				  <input type="text" id="up_last_name" class="form-control" name="up_last_name" placeholder="Last Name"  value="<?php echo  $display['display_last_name']; ?>" />
 				</div>
 				<div class="form-group">
-				  <label for="exampleInputEmail1">Date Of Birth</label>
+				  <label for="up_date_of_birth">Date Of Birth</label>
 				  <input type="date" id="up_date_of_birth" class="form-control" name="up_date_of_birth" placeholder="Date Of Birth"  value="<?php echo  $display['display_date_of_birth']; ?>" />
 				</div>
 				<div class="form-group">
-				  <label for="exampleInputEmail1">Image URL</label><img src="<?php echo $display['display_small_url']; ?>" style="height:100px;width:100px" />
+				  <label for="up_image_url">Image URL</label><img src="<?php echo $display['display_small_url']; ?>" style="height:100px;width:100px" />
 				  <input type="file" id="up_image_url" class="form-control" name="up_image_url" placeholder="Image URL" />
 				</div>
 				<div id="up_failure"></div><br>
+				
 			    <div id="buttons" align="center">
 					<button type="submit" class="btn btn-info" name="submit" id="profile_form">Save Changes</button>
 			    </div>
@@ -296,9 +297,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<section class="content">
       <div class="container-fluid">
       <?php if ($this->session->userdata('username')){ ?>
-        <h5 class="mb-2">My Widgets</h5>
+        <h5 class="mb-2" style="text-align:center;color:#17a2b8">My Widgets</h5>
         <?php } else { ?>
-        <h5 class="mb-2">All Visible Widgets</h5>
+        <h5 class="mb-2" style="text-align:center;color:#17a2b8">All Visible Widgets</h5>
         <?php }  ?>
         <div class="row">
 		  <?php if($mega_header['data']['widgets']) { ?>
@@ -316,10 +317,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<span class="info-box-text"><em><?php echo $widget['user']['name']; ?></em>
 				<?php if ($this->session->userdata('username')){ ?>
 					<button type="button" class="btn btn-tool" data-toggle="modal" data-target="#update_widget_modal<?php echo $widget['id']; ?>" title="Edit Widget"><i class="fas fa-edit btn btn-block btn-outline-primary btn-sm"></i>
-					<button type="button" class="btn btn-tool" onclick="destroy_widget(<?php echo $widget['id']; ?>);" title="Delete Widget"><i class="fas fa-trash-alt btn btn-block btn-outline-warning btn-sm"></i></span>
+										</button>
+					<button type="button" class="btn btn-tool" onclick="destroy_widget(<?php echo $widget['id']; ?>);" title="Delete Widget"><i class="fas fa-trash-alt btn btn-block btn-outline-warning btn-sm"></i>					</button></span>
+					
 				<?php } else { ?>
-					</span>
 					<button type="button" class="btn btn-tool" data-toggle="modal" data-target="#view_user_widget_modal<?php echo $widget['id']; ?>" title="View All Visible Widgets Of This User"><i class="far fa-eye btn btn-block btn-outline-primary btn-sm"></i>
+					</button>
+					</span>
 				<?php } ?>
               </div>
               <!-- /.info-box-content -->
@@ -386,7 +390,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  
 		  <?php } ?>
 		  <?php } else { ?>
-			Sorry, no widgets found.
+              <div class="error-page" align="center" style="width:100%">
+               
+                <div class="error-content" style="margin-left:0px;">
+                  <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Widget not found.</h3>
+        
+                  <p>
+                  <?php if ($this->session->userdata('username')){ ?>
+                    You do not have a widget as of now!
+                    You may create one using the menu "Create Widget" under your account (Top Right Menu).
+                  
+                  <?php } else { ?>
+                    We could not find any widgets for your serach criteria!
+                    Please try using a different search criteria.
+                    <?php }  ?>
+                  </p>
+                </div>
+                <!-- /.error-content -->
+              </div>
 		  <?php } ?>
         </div>
         <!-- /.row -->
@@ -408,7 +429,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <footer class="main-footer">
     <!-- To the right -->
     <div class="float-right d-none d-sm-inline">
-      Anything you want
+      Make Life Beautiful With Widgets! :)
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2020-2021 The Widget Team </strong> All rights reserved.
@@ -464,7 +485,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			success: function(response){
 				try {
 					if (response['code'] == 0){
-						alert('successfully updated the profile :'+<?=base_url()?>);
+			//			alert('successfully updated the profile :');
 						window.location = '<?=base_url()?>';
 						$("#up_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
 						

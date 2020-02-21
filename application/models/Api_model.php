@@ -29,6 +29,9 @@ class Api_model extends CI_Model {
 	    log_message('debug',print_r('method is :'.$type, TRUE));
 	    log_message('debug',print_r('url is :'.$url, TRUE));
 
+	       log_message('debug', print_r('Printing data array after this message', TRUE));
+	       log_message('debug', print_r($dataArray, TRUE));
+	    
 	    
 	    $this->load->library('session');
 	    $ch = curl_init();
