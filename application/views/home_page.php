@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>Test Project</title>
+  <title>The Widget App</title>
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/fontawesome-free/css/all.min.css'); ?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/adminlte.min.css') ?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css'); ?>">
@@ -20,9 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
       <a href="<?php echo base_url(); ?>" class="navbar-brand">
-        <img src="<?php echo base_url('assets/dist/img/AdminLTELogo.png') ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <i class="nav-icon fas fa-th" class="brand-image img-circle elevation-3" style="opacity: .8"></i>
+        <span class="brand-text font-weight-light"><b>The Widget App</b></span>
       </a>
       
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php if ($this->session->userdata('username')){ ?>
 		  <li class="nav-item dropdown">
 			<a class="nav-link" data-toggle="dropdown" href="#">
-			  <i class="fa fa-user mr-2"></i> <?php echo $this->session->userdata('username'); ?>
+			  <i class="fa fa-user mr-2"></i> <?php echo $this->session->userdata('username'); ?> <i class="fa fa-caret-down"></i>
 			</a>
 			<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 			  <div class="dropdown-divider"></div>
@@ -284,7 +283,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 				<div id="up_failure"></div><br>
 			    <div id="buttons" align="center">
-					<button type="submit" class="btn btn-info" name="submit" id="profile_form">Sign Up</button>
+					<button type="submit" class="btn btn-info" name="submit" id="profile_form">Save Changes</button>
 			    </div>
 			  </form>
 			</div>
@@ -296,7 +295,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="content-wrapper">
 	<section class="content">
       <div class="container-fluid">
-        <h5 class="mb-2">Widgets</h5>
+      <?php if ($this->session->userdata('username')){ ?>
+        <h5 class="mb-2">My Widgets</h5>
+        <?php } else { ?>
+        <h5 class="mb-2">All Visible Widgets</h5>
+        <?php }  ?>
         <div class="row">
 		  <?php if($mega_header['data']['widgets']) { ?>
 		  <?php foreach ($mega_header['data']['widgets'] as $widget) { ?>
@@ -312,17 +315,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php } ?>
 				<span class="info-box-text"><em><?php echo $widget['user']['name']; ?></em>
 				<?php if ($this->session->userdata('username')){ ?>
-					<button type="button" class="btn btn-tool" data-toggle="modal" data-target="#update_widget_modal<?php echo $widget['id']; ?>" title="Edit Widget"><i class="fas fa-edit btn btn-block btn-outline-primary btn-sm"></i></button>
-					<button type="button" class="btn btn-tool" onclick="destroy_widget(<?php echo $widget['id']; ?>);" title="Delete Widget"><i class="fas fa-trash-alt btn btn-block btn-outline-warning btn-sm"></i></button></span>
+					<button type="button" class="btn btn-tool" data-toggle="modal" data-target="#update_widget_modal<?php echo $widget['id']; ?>" title="Edit Widget"><i class="fas fa-edit btn btn-block btn-outline-primary btn-sm"></i>
+					<button type="button" class="btn btn-tool" onclick="destroy_widget(<?php echo $widget['id']; ?>);" title="Delete Widget"><i class="fas fa-trash-alt btn btn-block btn-outline-warning btn-sm"></i></span>
 				<?php } else { ?>
 					</span>
-					<a data-toggle="modal" data-target="#view_user_modal<?php echo $widget['id']; ?>"  onclick="view_user(<?php echo $widget['user']['id']; ?>, <?php echo $widget['id']; ?>);" class="small-box-footer">View User <i class="fas fa-arrow-circle-right"></i></a>
+					<button type="button" class="btn btn-tool" data-toggle="modal" data-target="#view_user_widget_modal<?php echo $widget['id']; ?>" title="View All Visible Widgets Of This User"><i class="far fa-eye btn btn-block btn-outline-primary btn-sm"></i>
 				<?php } ?>
               </div>
               <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
           </div>
+          
+          
+           <div class="modal fade" id="view_user_widget_modal<?php echo $widget['id']; ?>" role="dialog">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h4 class="modal-title">Enter Any Serach Term You Like</h4>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				<div class="modal-body">
+					<div id="vw_success"></div>
+					<div class="form-group">
+                      <label for="exampleInputEmail1">Search Term (Not Mandatory)</label>
+					  <input type="text" id="user_search_term<?php echo $widget['id']; ?>" class="form-control" name="user_search_term" placeholder="User Search Term">
+                    </div>
+					<div id="vw_failure"></div> <br>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="view_user_widget(<?php echo $widget['id']; ?>, <?php echo $widget['user']['id']; ?>);">Save Changes</button>
+				</div>
+			  </div>
+			  <!-- /.modal-content -->
+			</div>
+		   </div>
+          
 		  <div class="modal fade" id="update_widget_modal<?php echo $widget['id']; ?>" role="dialog">
 			<div class="modal-dialog">
 			  <div class="modal-content">
@@ -352,26 +383,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			  <!-- /.modal-content -->
 			</div>
 		   </div>
-		  <div class="modal fade" id="view_user_modal<?php echo $widget['id']; ?>" role="dialog">
-			<div class="modal-dialog">
-			  <div class="modal-content">
-				<div class="modal-header">
-				  <h4 class="modal-title">View User Details</h4>
-				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				  </button>
-				</div>
-				<div class="modal-body">
-				  <h5>First Name : </h5><br>
-				  <h5>Last Name : </h5><br>
-				</div>
-				<div class="modal-footer justify-content-between">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			  </div>
-			  <!-- /.modal-content -->
-			</div>
-		   </div>
+		  
 		  <?php } ?>
 		  <?php } else { ?>
 			Sorry, no widgets found.
@@ -399,7 +411,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2020-2021 The Widget Team </strong> All rights reserved.
   </footer>
 </div>
 <script>
@@ -586,6 +598,35 @@ function search_widget(){
 	window.location = url;
 }
 </script>
+
+<script>
+function search_my_widget(){
+	//alert("inside search my widget");
+	
+	var search_term = document.getElementById('search_my_term').value;
+	var url = '<?=base_url()?>index.php?search_term='+search_term;
+
+	//alert('url is :'+url);
+	
+	window.location = url;
+}
+</script>
+
+<script>
+function view_user_widget(widget_id, user_id){
+	alert("inside destroy widget");
+	
+	
+	var search_term = document.getElementById('user_search_term'+widget_id).value;
+	var url = '<?=base_url()?>index.php?search_term='+ search_term + '&user_id='+ user_id;
+
+	alert('url is :'+url);
+	
+	window.location = url;
+}
+
+</script>
+
 <script>
 function user_logout(){
 	//alert("inside user login");
@@ -733,7 +774,7 @@ function update_widget(widget_id){
 
 <script>
 function view_user(user_id, widget_id){
-	//alert("inside view_user");
+	alert("inside view_user");
 	
 	$.ajax({
 		method: 'post',
@@ -801,10 +842,10 @@ function destroy_widget(widget_id){
 
 }
 </script>
+
+
 <script src="<?php echo base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
-<!-- Bootstrap 4 -->
 <script src="<?php echo base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
-<!-- AdminLTE App -->
 <script src="<?php echo base_url('assets/dist/js/adminlte.min.js'); ?>"></script>
 </body>
 </html>

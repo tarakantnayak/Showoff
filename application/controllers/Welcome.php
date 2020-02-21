@@ -74,14 +74,34 @@ class Welcome extends CI_Controller {
 	        $data['client_secret'] = $client_secret;
 	        
 	        $my_widgets = $this->config->item('my_widgets');
-	        	        
+
+	        if (ISSET($_GET['search_term'])){
+	            $data['term'] = $_GET['search_term'];
+	        }        
+	        
 	        $result_json = $this->api_model->apiCall($my_widgets, $data, 'GET', 'BEARER');
 	        
-	        
-	        $master_data['display']['display_first_name'] = $this->session->userdata('first_name');
-	        $master_data['display']['display_last_name'] = $this->session->userdata('last_name');
-	        $master_data['display']['display_date_of_birth'] = $this->session->userdata('date_of_birth');
-	        $master_data['display']['display_small_url'] = $this->session->userdata('small_url');
+	        if ($this->session->userdata('first_name')){
+    	        $master_data['display']['display_first_name'] = $this->session->userdata('first_name');
+    	        $master_data['display']['display_last_name'] = $this->session->userdata('last_name');
+    	        $master_data['display']['display_date_of_birth'] = $this->session->userdata('date_of_birth');
+    	        $master_data['display']['display_small_url'] = $this->session->userdata('small_url');
+	        } else {
+	            $data = array();
+	            
+	            $my_details = $this->config->item('my_details');
+	            
+	            $my_data_json = $this->api_model->apiCall($my_details, $data, 'GET', 'BEARER');
+	            
+	            $my_data = json_decode($my_data_json, true);
+	            
+	            $master_data['display']['display_first_name'] = $my_data['data']['user']['first_name'];
+	            $master_data['display']['display_last_name'] = $my_data['data']['user']['last_name'];
+	            $date_of_birth = $my_data['data']['user']['date_of_birth'];
+	            $master_data['display']['display_date_of_birth'] = date("Y-m-d", $date_of_birth);
+	            $master_data['display']['display_small_url'] = $my_data['data']['user']['images']['small_url'];
+	            
+	        }
 
 	    } else { ///The user has not logged in, hence display all the visible widgets created by all the users
 	        log_message('debug',print_r('user has not logged in',TRUE));
@@ -90,15 +110,59 @@ class Welcome extends CI_Controller {
     	    $data['client_id'] = $client_id;
     	    $data['client_secret'] = $client_secret;
     	    
-    	    $url = $this->config->item('visible_widgets');
-    	    
-    	    if (ISSET($_GET['search_term'])){
-    	        $data['term'] = $_GET['search_term'];
-    	    }
-    	    
     	    $this->load->model('api_model');
     	    
-    	    $result_json = $this->api_model->apiCall($url, $data, 'GET', ''); 
+    	    if (ISSET($_GET['user_id'])){
+    	        log_message('debug',print_r('user id is:'.$_GET['user_id'], TRUE));
+    	        
+    	        $user_widgets = $this->config->item('user_widgets');
+    	        $user_widgets_ext = $this->config->item('user_widgets_ext');
+    	        
+    	        $url = $user_widgets . $_GET['user_id'] . $user_widgets_ext;
+    	        
+    	        if (ISSET($_GET['search_term'])){
+    	            log_message('debug',print_r('search term is:'.$_GET['search_term'], TRUE));
+    	            $data['term'] = $_GET['search_term'];
+    	        }
+    	            	        
+    	        $all_result_json = $this->api_model->apiCall($url, $data, 'GET', '');
+    	        
+    	        $all_result = json_decode($all_result_json, true);
+    	        
+    	        $visible_widgets = array();
+    	        
+    	        foreach ($all_result['data']['widgets'] as $widget){
+    	            if ($widget['kind'] == 'visible'){
+    	                $visible_widgets[] = $widget;
+    	            }
+    	        }
+    	        
+    	        $widgets['widgets'] = $visible_widgets;
+    	        
+    	        $result = array(
+    	            'code'     => $all_result['code'],
+    	            'message'  => $all_result['message'],
+    	            'data'     => $widgets
+    	        );
+    	        
+    	        $result_json = json_encode($result);
+    	        
+    	    } else {
+    	        $url = $this->config->item('visible_widgets');
+    	        
+    	        if (ISSET($_GET['search_term'])){
+    	            log_message('debug',print_r('search term is:'.$_GET['search_term'], TRUE));
+    	            $data['term'] = $_GET['search_term'];
+    	        }
+    	        
+    	        
+    	        $result_json = $this->api_model->apiCall($url, $data, 'GET', '');
+    	    }
+    	    
+    	    
+    	    
+    	    
+    	     
     	   // log_message('debug',print_r($result,TRUE));
     	    $master_data['display']['display_first_name'] = '';
     	    $master_data['display']['display_last_name'] = '';

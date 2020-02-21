@@ -25,10 +25,9 @@ class Api_model extends CI_Model {
   	
 	public function apiCall($url, $dataArray, $type, $param){
 	    	    
-	    //print_r("inside api call");
-	    //log_message('debug',print_r('inside apicall', TRUE));
-	    //log_message('debug',print_r('method is :'.$type, TRUE));
-	    //log_message('debug',print_r('url is :'.$url, TRUE));
+	    log_message('debug',print_r('inside apicall', TRUE));
+	    log_message('debug',print_r('method is :'.$type, TRUE));
+	    log_message('debug',print_r('url is :'.$url, TRUE));
 
 	    
 	    $this->load->library('session');
@@ -63,18 +62,21 @@ class Api_model extends CI_Model {
 	        
 	        //log_message('debug',print_r('Inside get method',TRUE));
 	        $data = http_build_query($dataArray);
-	        $getUrl = $url."?".$data;
-
+	        if ($data){
+	           $getUrl = $url."?".$data;
+	        } else {
+	            $getUrl = $url;
+	        }
 	        
-	        log_message('debug', print_r('printing url :'.$getUrl, TRUE));
-	        log_message('debug', print_r('printing HEADER', TRUE));
+//	        log_message('debug', print_r('printing url :'.$getUrl, TRUE));
+//	        log_message('debug', print_r('printing HEADER', TRUE));
 
 	        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 	        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	        curl_setopt($ch, CURLOPT_URL, $getUrl);
             
-            log_message('debug', print_r($headers, TRUE));                
+ //           log_message('debug', print_r($headers, TRUE));                
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 	        
 	        curl_setopt($ch, CURLOPT_TIMEOUT, 80);
@@ -83,11 +85,11 @@ class Api_model extends CI_Model {
 	        	        
 	        $data_string = json_encode($dataArray);
 	        
-	        log_message('debug', print_r('Printing data string after this message', TRUE));
-	        log_message('debug', print_r($data_string, TRUE));
+	//        log_message('debug', print_r('Printing data string after this message', TRUE));
+	//        log_message('debug', print_r($data_string, TRUE));
 	        
-	        log_message('debug', print_r('Printing header after this message', TRUE));
-	        log_message('debug', print_r($headers, TRUE));
+	 //       log_message('debug', print_r('Printing header after this message', TRUE));
+	  //      log_message('debug', print_r($headers, TRUE));
 	        
 	        
 	        curl_setopt($ch, CURLOPT_URL, $url);
@@ -103,14 +105,14 @@ class Api_model extends CI_Model {
 	        
 	        $data_string = json_encode($dataArray);
 	        
-	        log_message('debug', print_r('Printing data ARRAY after this message', TRUE));
-	        log_message('debug', print_r($data_string, TRUE));
+	    //    log_message('debug', print_r('Printing data ARRAY after this message', TRUE));
+	    //    log_message('debug', print_r($data_string, TRUE));
 	        
-	        log_message('debug', print_r('Printing header after this message', TRUE));
-	        log_message('debug', print_r($headers, TRUE));
+	    //    log_message('debug', print_r('Printing header after this message', TRUE));
+	    //    log_message('debug', print_r($headers, TRUE));
 	        
-	        log_message('debug', print_r('Printing URL after this message', TRUE));
-	        log_message('debug', print_r($url, TRUE));
+	    //    log_message('debug', print_r('Printing URL after this message', TRUE));
+	    //    log_message('debug', print_r($url, TRUE));
 	        
 	        curl_setopt($ch, CURLOPT_URL, $url);
 	        
@@ -122,21 +124,20 @@ class Api_model extends CI_Model {
 	        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 	        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-	        log_message('debug', print_r('here 1', TRUE));
-	        log_message('debug', print_r('here 2', TRUE));
+
 	    } elseif ($type == 'DEL'){
 	        
 	        
-	        log_message('debug', print_r('Printing data ARRAY after this message', TRUE));
-	        log_message('debug', print_r($dataArray, TRUE));
+	  //      log_message('debug', print_r('Printing data ARRAY after this message', TRUE));
+	  //      log_message('debug', print_r($dataArray, TRUE));
 	        
-	        log_message('debug', print_r('Printing header after this message', TRUE));
-	        log_message('debug', print_r($headers, TRUE));
+	  //      log_message('debug', print_r('Printing header after this message', TRUE));
+	  //      log_message('debug', print_r($headers, TRUE));
 	        
 	        //$url = sprintf("%s?%s", $url, http_build_query($dataArray));
 	        
-	        log_message('debug', print_r('Printing URL after this message', TRUE));
-	        log_message('debug', print_r($url, TRUE));
+	    //    log_message('debug', print_r('Printing URL after this message', TRUE));
+	    //    log_message('debug', print_r($url, TRUE));
 	        
 	        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 	        
@@ -157,8 +158,8 @@ class Api_model extends CI_Model {
 	    }
 	    
 	    $response = json_decode($response_json, true);
-	    log_message('debug', print_r('Printing respone after this message', TRUE));
-	    log_message('debug', print_r($response, TRUE));
+	    //log_message('debug', print_r('Printing respone after this message', TRUE));
+	    //log_message('debug', print_r($response, TRUE));
 	    
 	    
 	    
