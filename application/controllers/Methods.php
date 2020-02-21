@@ -179,7 +179,7 @@ class Methods extends CI_Controller {
 	    
 	    log_message('debug', print_r($result_json, TRUE));
 	    
-	    echo json_encode($response_data);
+	    echo $result_json;
 	     
 	}
 	

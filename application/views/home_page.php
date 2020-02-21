@@ -666,6 +666,27 @@ function change_password(){
 	
 	var current_password = document.getElementById('cp_current_password').value;
 	var new_password = document.getElementById('cp_new_password').value;
+	var message;
+
+	
+	if (!current_password){
+		message = 'Current Password cannot be empty';
+		$("#cp_failure").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + message + '</b></div>').show('fast').delay(5000).hide('fast');
+		return;
+	}
+
+	if (!new_password){
+		message = 'New Password cannot be empty';
+		$("#cp_failure").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + message + '</b></div>').show('fast').delay(5000).hide('fast');
+		return;
+	}
+
+	if (current_password == new_password){
+		message = 'Both current & new Passwords cannot be same';
+		$("#cp_failure").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + message + '</b></div>').show('fast').delay(5000).hide('fast');
+		return;
+
+	}
 	
 	$.ajax({
 		method: 'post',
