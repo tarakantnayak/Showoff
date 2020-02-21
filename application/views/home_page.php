@@ -661,12 +661,6 @@ function user_logout(){
 
 }
 </script>
-
-<script>
-var env_link = <?php echo getenv('create_widget'); ?>;
-
-alert("create_widget link :"+env_link);
-</script>
 <script>
 function change_password(){
 	//alert("inside change password");

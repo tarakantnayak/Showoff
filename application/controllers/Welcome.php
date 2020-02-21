@@ -28,8 +28,8 @@ class Welcome extends CI_Controller {
 	    $this->load->library('session');
 	    $this->load->model('api_model');
 	    
-	    $client_id = $this->config->item('client_id');
-	    $client_secret = $this->config->item('client_secret');
+	    $client_id = $this->api_model->getEnv('client_id');
+	    $client_secret = $this->api_model->getEnv('client_secret');
 	    
 	   //$this->api_model->unset_all_data();
 	    
@@ -54,11 +54,11 @@ class Welcome extends CI_Controller {
 	            
 	            $data['api'] = 'REFRESH';
 	            $data['refresh_token'] = $this->session->userdata('refresh_token');
-	            $data['grant_type'] = $this->config->item('refresh_grant_type');
+	            $data['grant_type'] = $this->api_model->getEnv('refresh_grant_type');
 	            
 	            //$data['call_from'] = 'refresh_login'; //for debugging purpose
 	            
-	            $url = $this->config->item('refresh_login');
+	            $url = $this->api_model->getEnv('refresh_login');
 	            
 	            $result_json = $this->api_model->apiCall($url, $data, 'POST', 'REFRESH');
 	            
@@ -73,7 +73,7 @@ class Welcome extends CI_Controller {
 	        $data['client_id'] = $client_id;
 	        $data['client_secret'] = $client_secret;
 	        
-	        $my_widgets = $this->config->item('my_widgets');
+	        $my_widgets = $this->api_model->getEnv('my_widgets');
 
 	        if (ISSET($_GET['search_term'])){
 	            $data['term'] = $_GET['search_term'];
@@ -89,7 +89,7 @@ class Welcome extends CI_Controller {
 	        } else {
 	            $data = array();
 	            
-	            $my_details = $this->config->item('my_details');
+	            $my_details = $this->api_model->getEnv('my_details');
 	            
 	            $my_data_json = $this->api_model->apiCall($my_details, $data, 'GET', 'BEARER');
 	            
@@ -110,13 +110,12 @@ class Welcome extends CI_Controller {
     	    $data['client_id'] = $client_id;
     	    $data['client_secret'] = $client_secret;
     	    
-    	    $this->load->model('api_model');
     	    
     	    if (ISSET($_GET['user_id'])){
     	        log_message('debug',print_r('user id is:'.$_GET['user_id'], TRUE));
     	        
-    	        $user_widgets = $this->config->item('user_widgets');
-    	        $user_widgets_ext = $this->config->item('user_widgets_ext');
+    	        $user_widgets = $this->api_model->getEnv('user_widgets');
+    	        $user_widgets_ext = $this->api_model->getEnv('user_widgets_ext');
     	        
     	        $url = $user_widgets . $_GET['user_id'] . $user_widgets_ext;
     	        
@@ -148,7 +147,7 @@ class Welcome extends CI_Controller {
     	        $result_json = json_encode($result);
     	        
     	    } else {
-    	        $url = $this->config->item('visible_widgets');
+    	        $url = $this->api_model->getEnv('visible_widgets');
     	        
     	        if (ISSET($_GET['search_term'])){
     	            log_message('debug',print_r('search term is:'.$_GET['search_term'], TRUE));

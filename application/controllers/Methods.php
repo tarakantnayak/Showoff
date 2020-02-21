@@ -23,22 +23,21 @@ class Methods extends CI_Controller {
 		//header('Content-Type: application/json');
 		
 		//print_r("inside user_login");
-		
+	    $this->load->model('api_model');
 	    $data = array();
 		
 	    $data['username'] = $this->input->post('email_id');
 	    $data['password'] = $this->input->post('password');
 	    
-	    $data['client_id'] = $this->config->item('client_id');
-	    $data['client_secret'] = $this->config->item('client_secret');
+	    $data['client_id'] = $this->api_model->getEnv('client_id');
+	    $data['client_secret'] = $this->api_model->getEnv('client_secret');
 	    
 	    
-	    $url = $this->config->item('user_login');
-	    $data['grant_type'] = $this->config->item('login_grant_type');
+	    $url = $this->api_model->getEnv('user_login');
+	    $data['grant_type'] = $this->api_model->getEnv('login_grant_type');
 		
-	   // $data['call_from'] = 'user_login'; //for debugging purpose
 	    
-		$this->load->model('api_model');
+		
 		//log_message('debug',print_r('about to call apicall',TRUE));
 		$result_json = $this->api_model->apiCall($url, $data, 'POST', '');
 		//log_message('debug',print_r('after calling apicall',TRUE));
@@ -51,19 +50,21 @@ class Methods extends CI_Controller {
 	}
 
 	public function user_logout(){
+	    
 	    //header('Content-Type: application/json');
 	    
 	    log_message('debug',print_r('inside user logout',TRUE));
 	    //print_r("inside user_login");
 
-	    $response_data = $this->user_logout_local();
+	    $result_json = $this->user_logout_local();
 	    
-	    log_message('debug', print_r($response_data, TRUE));
-	    echo json_encode($response_data);
+	    log_message('debug', print_r($result_json, TRUE));
+	    echo $result_json;
 	    
 	}
 	
 	public function user_logout_local(){
+	    $this->load->model('api_model');
 	    
 	    log_message('debug',print_r('inside user_logout_local',TRUE));
 	    //print_r("inside user_login");
@@ -73,28 +74,29 @@ class Methods extends CI_Controller {
 	    $data = array();
 	    
 	    
-	    $url = $this->config->item('user_logout');
+	    $url = $this->api_model->getEnv('user_logout');
 	    
 	    // $data['call_from'] = 'user_login'; //for debugging purpose
 	    
 	    $data['token'] = $this->session->userdata('access_token');
 	    
-	    $this->load->model('api_model');
-	    log_message('debug',print_r('about to call apicall for logout',TRUE));
+	    
+	    //log_message('debug',print_r('about to call apicall for logout',TRUE));
 	    $result_json = $this->api_model->apiCall($url, $data, 'POST', 'LOGOUT');
 	    //log_message('debug',print_r('after calling apicall',TRUE));
 	    
 	    $response_data = $this->api_model->unset_session_data($result_json);
 	    
-	    log_message('debug', print_r($response_data, TRUE));
+	    //log_message('debug', print_r($response_data, TRUE));
 	    
-	    return $response_data;
+	    return $result_json;
 	    
 	}
 	
 	
 	
 	public function user_signup(){
+	    $this->load->model('api_model');
 	    
 	    $data = array();
 	    $user = array();
@@ -116,13 +118,13 @@ class Methods extends CI_Controller {
             }
 	    }
 
-	    $data['client_id'] = $this->config->item('client_id');
-	    $data['client_secret'] = $this->config->item('client_secret');
+	    $data['client_id'] = $this->api_model->getEnv('client_id');
+	    $data['client_secret'] = $this->api_model->getEnv('client_secret');
 	    $data['user'] = $user;
 	    
-	    $url = $this->config->item('user_signup');
+	    $url = $this->api_model->getEnv('user_signup');
 	    
-	    $this->load->model('api_model');
+	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'POST', '');
 
 	    log_message('debug',print_r($result_json,TRUE));
@@ -133,19 +135,20 @@ class Methods extends CI_Controller {
 	}
 	
 	public function user_reset_password(){
+	    $this->load->model('api_model');
 	    
 	    $data = array();
 	    $user = array();
 	    
 	    $user['email'] = $this->input->post('reset_email_id');
 	    
-	    $data['client_id'] = $this->config->item('client_id');
-	    $data['client_secret'] = $this->config->item('client_secret');
+	    $data['client_id'] = $this->api_model->getEnv('client_id');
+	    $data['client_secret'] = $this->api_model->getEnv('client_secret');
 	    $data['user'] = $user;
 	    
-	    $url = $this->config->item('reset_password');
+	    $url = $this->api_model->getEnv('reset_password');
 	    
-	    $this->load->model('api_model');
+	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'POST', '');
 	    
 	    log_message('debug', print_r($result_json, TRUE));
@@ -157,6 +160,8 @@ class Methods extends CI_Controller {
 
 	public function change_password(){
 	    
+	    $this->load->model('api_model');
+	    
 	    $data = array();
 	    $user = array();
 	    
@@ -165,9 +170,9 @@ class Methods extends CI_Controller {
 	    
 	    $data['user'] = $user;
 	    
-	    $url = $this->config->item('change_password');
+	    $url = $this->api_model->getEnv('change_password');
 	    
-	    $this->load->model('api_model');
+	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'POST', 'BEARER');
 	    
 	    $result = json_decode($result_json, true);
@@ -184,6 +189,7 @@ class Methods extends CI_Controller {
 	}
 	
 	public function create_widget(){
+	    $this->load->model('api_model');
 	    
 	    $data = array();
 	    $widget = array();
@@ -194,9 +200,9 @@ class Methods extends CI_Controller {
 	    
 	    $data['widget'] = $widget;
 	    
-	    $url = $this->config->item('create_widget');
+	    $url = $this->api_model->getEnv('create_widget');
 	    
-	    $this->load->model('api_model');
+	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'POST', 'BEARER');
 	    
 	    
@@ -207,6 +213,7 @@ class Methods extends CI_Controller {
 	}
 	
 	public function update_widget(){
+	    $this->load->model('api_model');
 	    
 	    $data = array();
 	    $widget = array();
@@ -217,9 +224,9 @@ class Methods extends CI_Controller {
 
 	    $data['widget'] = $widget;
 	    
-	    $url = $this->config->item('amend_widget').$widget_id;
+	    $url = $this->api_model->getEnv('amend_widget').$widget_id;
 	    
-	    $this->load->model('api_model');
+	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'PUT', 'BEARER');
 	    
 	    
@@ -230,14 +237,14 @@ class Methods extends CI_Controller {
 	}
 	
 	public function destroy_widget(){
-	    
+	    $this->load->model('api_model');
 	    $data = array();
 	    
 	    $widget_id = $this->input->post('widget_id');
 	    
-	    $url = $this->config->item('amend_widget').$widget_id;
+	    $url = $this->api_model->getEnv('amend_widget').$widget_id;
 	    
-	    $this->load->model('api_model');
+	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'DEL', 'BEARER');
 	    
 	    log_message('debug', print_r($result_json, TRUE));
@@ -247,6 +254,7 @@ class Methods extends CI_Controller {
 	}
 
 	public function update_profile(){
+	    $this->load->model('api_model');
 	    
 	    $data = array();
 	    $user = array();
@@ -270,9 +278,9 @@ class Methods extends CI_Controller {
 	        }
 	    }
 	    $data['user'] = $user;
-	    $url = $this->config->item('user_update');
+	    $url = $this->api_model->getEnv('user_update');
 	    
-	    $this->load->model('api_model');
+	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'PUT', 'BEARER');
 	    
 	    $result = json_decode($result_json, true);
@@ -291,17 +299,17 @@ class Methods extends CI_Controller {
 	}
 	
 	public function search_widget(){
-	    
+	    $this->load->model('api_model');
 	    $data = array();
 	    
-	    $data['client_id'] = $this->config->item('client_id');
-	    $data['client_secret'] = $this->config->item('client_secret');
+	    $data['client_id'] = $this->api_model->getEnv('client_id');
+	    $data['client_secret'] = $this->api_model->getEnv('client_secret');
 	    
 	    $user['search_term'] = $this->input->post('search_term');
 	    
-	    $url = $this->config->item('visible_widgets');
+	    $url = $this->api_model->getEnv('visible_widgets');
 	    
-	    $this->load->model('api_model');
+	    
 	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'GET', '');
 	    
@@ -314,17 +322,18 @@ class Methods extends CI_Controller {
 	    
 	}
 	public function view_user(){
+	    $this->load->model('api_model');
 	    
 	    $data = array();
 	    
-	    $data['client_id'] = $this->config->item('client_id');
-	    $data['client_secret'] = $this->config->item('client_secret');
+	    $data['client_id'] = $this->api_model->getEnv('client_id');
+	    $data['client_secret'] = $this->api_model->getEnv('client_secret');
 	    
 	    $user_id = $this->input->post('user_id');
 	    
-	    $url = $this->config->item('user_details'). $user_id;
+	    $url = $this->api_model->getEnv('user_details'). $user_id;
 	    
-	    $this->load->model('api_model');
+	    
 	    
 	    $result_json = $this->api_model->apiCall($url, $data, 'GET', '');
 	    

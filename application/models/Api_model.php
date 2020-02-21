@@ -298,4 +298,17 @@ class Api_model extends CI_Model {
 	        log_message('debug', print_r('UNSET ALL DATA, ENDS HERE',TRUE));
 	}
 	
+	public function getEnv($key){
+	    log_message('debug',print_r('Inside getEnv function for key :'.$key,TRUE));
+	    if (getenv($key)){
+	         echo "value set in environment for this key :".$this->config->item($key);
+	        log_message('debug',print_r('value set in environment for this key :'.getenv($key),TRUE));
+	        return getenv($key);
+	    } else {
+	         echo "value set in config file for this key :".$this->config->item($key);
+	        log_message('debug',print_r('value set in config file for this key :'.$this->config->item($key),TRUE));
+	        return $this->config->item($key);
+	    }	    
+	}
+	
 }
