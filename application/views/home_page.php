@@ -347,7 +347,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 				<div class="modal-footer justify-content-between">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" onclick="view_user_widget(<?php echo $widget['id']; ?>, <?php echo $widget['user']['id']; ?>);">Save Changes</button>
+					<button type="button" class="btn btn-primary" onclick="view_user_widget(<?php echo $widget['id']; ?>, <?php echo $widget['user']['id']; ?>);">Show Widgets</button>
 				</div>
 			  </div>
 			  <!-- /.modal-content -->
