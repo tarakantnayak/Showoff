@@ -404,7 +404,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <script>
 	$("form#sign_up_form").submit(function(e) {
-		alert("123");
+		//alert("123");
 		e.preventDefault();
 		$.ajax({
 			url: '<?=base_url()?>index.php/methods/user_signup',
@@ -439,7 +439,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 	$("form#profile_form").submit(function(e) {
-		alert("123");
+		//alert("123");
 		e.preventDefault();
 		$.ajax({
 			url: '<?=base_url()?>index.php/methods/update_profile',
@@ -452,7 +452,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			success: function(response){
 				try {
 					if (response['code'] == 0){
-						alert('successfully updated the profile');
+						//alert('successfully updated the profile');
 						window.location = '<?=base_url()?>';
 						$("#up_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
 						
@@ -541,7 +541,7 @@ function hide_modal_except(modal_name, action_type){
 </script>
 <script>
 function user_reset_password(){
-	alert("inside user password reset");
+	//alert("inside user password reset");
 	
 	var reset_email_id = document.getElementById('reset_email_id').value;
 	
@@ -556,7 +556,7 @@ function user_reset_password(){
 			//response = JSON.parse(json);
 			try {
     			if (response['code'] == 0){
-    				alert('successfully reset the password');
+    				//alert('successfully reset the password');
     				hide_modal_except('login_modal', 'S');
     				$("#reset_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
     				
@@ -576,12 +576,12 @@ function user_reset_password(){
 </script>
 <script>
 function search_widget(){
-	alert("inside search widget");
+	//alert("inside search widget");
 	
 	var search_term = document.getElementById('search_term').value;
 	var url = '<?=base_url()?>index.php?search_term='+search_term;
 
-	alert('url is :'+url);
+	//alert('url is :'+url);
 	
 	window.location = url;
 }
@@ -602,7 +602,7 @@ function user_logout(){
 			//alert('code :'+response['code']);
 			try {
     			if (response['code'] == 0){
-//    				alert('successfully logged out');
+//    				//alert('successfully logged out');
     			      window.location = '<?=base_url()?>';
       				
     			} else {
@@ -621,7 +621,7 @@ function user_logout(){
 }
 </script><script>
 function change_password(){
-	alert("inside change password");
+	//alert("inside change password");
 	
 	var current_password = document.getElementById('cp_current_password').value;
 	var new_password = document.getElementById('cp_new_password').value;
@@ -637,7 +637,7 @@ function change_password(){
 			//response = JSON.parse(json);
 			try {
     			if (response['code'] == 0){
-    				alert('successfully changed the password');
+    				//alert('successfully changed the password');
     				window.location = '<?=base_url()?>';
     				$("#cp_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
     				
@@ -659,7 +659,7 @@ function change_password(){
 
 <script>
 function create_widget(){
-	alert("inside create widget");
+	//alert("inside create widget");
 	
 	var widget_name = document.getElementById('widget_name').value;
 	var widget_desc = document.getElementById('widget_desc').value;
@@ -676,7 +676,7 @@ function create_widget(){
 			//response = JSON.parse(json);
 			try {
     			if (response['code'] == 0){
-    				alert('successfully created a widget');
+    				//alert('successfully created a widget');
     				$("#cw_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
     				window.location = '<?=base_url()?>';
     				
@@ -696,7 +696,7 @@ function create_widget(){
 </script>
 <script>
 function update_widget(widget_id){
-	alert("inside update widget");
+	//alert("inside update widget");
 	
 	var widget_name = document.getElementById('widget_name'+widget_id).value;
 	var widget_desc = document.getElementById('widget_desc'+widget_id).value;
@@ -712,7 +712,7 @@ function update_widget(widget_id){
 			//response = JSON.parse(json);
 			try {
     			if (response['code'] == 0){
-    				alert('successfully updated a widget');
+    				//alert('successfully updated a widget');
     				$("#uw_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
     				window.location = '<?=base_url()?>';
     				
@@ -733,7 +733,7 @@ function update_widget(widget_id){
 
 <script>
 function view_user(user_id, widget_id){
-	alert("inside view_user");
+	//alert("inside view_user");
 	
 	$.ajax({
 		method: 'post',
@@ -746,7 +746,7 @@ function view_user(user_id, widget_id){
 			//response = JSON.parse(json);
 			try {
     			if (response['code'] == 0){
-    				alert('successfully updated a widget');
+    				//alert('successfully updated a widget');
     				$("#vu_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
     				document.getElementById('first_name'+widget_id).value = response['data']['user']['first_name'];
     				document.getElementById('last_name'+widget_id).value = response['data']['user']['last_name'];
@@ -770,7 +770,7 @@ function view_user(user_id, widget_id){
 
 <script>
 function destroy_widget(widget_id){
-	alert("inside destroy widget");
+	//alert("inside destroy widget");
 	
 	$.ajax({
 		method: 'post',
@@ -783,7 +783,7 @@ function destroy_widget(widget_id){
 			//response = JSON.parse(json);
 			try {
     			if (response['code'] == 0){
-    				alert('successfully destroyed a widget');
+    				//alert('successfully destroyed a widget');
     				$("#dw_success").html('<div class="col-md-12 text-center" style="color:#33cc33"><b>' + response['message'] + '</b></div>').show('fast').delay(5000).hide('fast');
     				window.location = '<?=base_url()?>';
     				
