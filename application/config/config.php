@@ -23,7 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$http_protocol = ISSET(getenv('http_protocol')) ? getenv('http_protocol') : 'http://';
+if (getenv('http_protocol')) { 
+    $http_protocol = getenv('http_protocol');    
+} else {
+    $http_protocol = 'http://';
+}
 
 $base  = $http_protocol . $_SERVER['HTTP_HOST'];
 //$base  = "http://".$_SERVER['HTTP_HOST'];
@@ -231,7 +235,11 @@ $config['allow_get_array'] = TRUE;
 */
 //$config['log_threshold'] = 2;
 
-$config['log_threshold'] = ISSET(getenv('log_threshold')) ? getenv('log_threshold') : 2;
+if (getenv('log_threshold')){
+    $config['log_threshold'] = getenv('log_threshold');
+} else {
+    $config['log_threshold'] = 2;
+}
 
 /*
 |--------------------------------------------------------------------------
