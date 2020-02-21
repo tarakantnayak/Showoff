@@ -614,13 +614,13 @@ function search_my_widget(){
 
 <script>
 function view_user_widget(widget_id, user_id){
-	alert("inside destroy widget");
+//	alert("inside destroy widget");
 	
 	
 	var search_term = document.getElementById('user_search_term'+widget_id).value;
 	var url = '<?=base_url()?>index.php?search_term='+ search_term + '&user_id='+ user_id;
 
-	alert('url is :'+url);
+//	alert('url is :'+url);
 	
 	window.location = url;
 }
